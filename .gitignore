@@ -22,6 +22,8 @@
 *.lib
 *.sbr
 *.sdf
+
+
 *.opensdf
 *.unsuccessfulbuild
 ipch/
@@ -66,3 +68,5 @@ packages/
 
 #Test files
 *.testsettings
+
+/Sifo/*
