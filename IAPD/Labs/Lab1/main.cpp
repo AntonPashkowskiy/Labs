@@ -77,6 +77,7 @@ int main()
         deviceIndex++;
     }
 
+    printf("\n\n\nDevice count: %d\n\n\n", deviceIndex);
 
     SetupDiDestroyDeviceInfoList( devInfoSet );
     system( "pause" );
