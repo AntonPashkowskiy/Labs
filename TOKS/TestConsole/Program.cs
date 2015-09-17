@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CustomExtentions;
 
 namespace TOKSLab1
 {
 	class Program
 	{
-        private const int maxBaudRate = 115200;
-
 		public static void Main(string[] args)
 		{
             var comPort1 = new SerialPort("COM1", 9600, Parity.None, 8, StopBits.One);
@@ -60,12 +59,6 @@ namespace TOKSLab1
             comPort2.Close();
             Console.ReadKey();
 		}
-
-        private static void SetMaxSpeed(SerialPort port1, SerialPort port2)
-        {
-            port1.BaudRate = maxBaudRate;
-            port2.BaudRate = maxBaudRate;
-        }
 
         private static void SendData(SerialPort serialPort, byte[] data)
         {
