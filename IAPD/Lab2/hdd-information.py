@@ -1,4 +1,4 @@
- #!/usr/bin/env python3
+#!/usr/bin/env python3
 
 from pyudev import Context
 from os import chdir, statvfs
@@ -13,8 +13,8 @@ def get_drive_mount_points(drive_sys_name):
         for line in f.readlines():
             if line.find(drive_sys_name) != -1:
                 path = line.split(' ')[1]
-                #'\040' is special symbol which replaces space symbol in path line
-                #if we don't replace this, we will have a bug with paths witch contain space symbol  
+                # '\040' is special symbol which replaces space symbol in path line
+                # if we don't replace this, we will have a bug with paths witch contain space symbol
                 mount_points.append(path.replace('\\040', ' '))
     return mount_points
 
@@ -43,14 +43,14 @@ def get_space_information(drive_sys_name):
 def get_hdd_list(udev_context):
     hdd_list = []
 
-    for device in udev_context.list_devices(sybsystem = 'block', DEVTYPE = 'disk'):
-        #devices with presentation policy '1' is hint to the software presentation level
+    for device in udev_context.list_devices(sybsystem='block', DEVTYPE='disk'):
+        # devices with presentation policy '1' is hint to the software presentation level
         if device.get('UDISKS_PRESENTATION_NOPOLICY') == '1':
             continue
         elif device.get('ID_TYPE') != 'disk':
             continue
         else:
-            hdd_list.append(device)        
+            hdd_list.append(device)
     return hdd_list
 
 
@@ -73,15 +73,10 @@ def get_hdd_properties(hard_disk_drive):
 
 
 def print_hdd_information(hdd_information):
-    print('------------- %s --------------'% hdd_information['name'])
-    print('Model: %s'% hdd_information['model'])
-    print('Vendor: %s'% hdd_information['vendor'])
-    print('Serial number: %s'% hdd_information['serial'])
-    print('Interface: %s'% hdd_information['bus'])
-    print('Firmware version: %s'% hdd_information['firmware_version'])
-    print('All space: %s'% hdd_information['all_space'])
-    print('Used space: %s'% hdd_information['used_space'])
-    print('Free space: %s'% hdd_information['free_space'])    
+    for key in hdd_information.keys():
+        if (hdd_information[key]):
+            print('%s : %s' % (key.capitalize().replace('_', ' '),
+                               hdd_information[key]))
 
 
 if __name__ == '__main__':

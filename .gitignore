@@ -70,3 +70,7 @@ packages/
 *.testsettings
 
 /Sifo/*
+
+/*/*/.idea/*
+/*/*/out/*
+/*/*/IdeaProjects.iml
