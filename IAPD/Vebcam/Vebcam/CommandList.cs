@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Vebcam
+﻿namespace Webcam
 {
     class CommandList
     {
@@ -12,11 +6,11 @@ namespace Vebcam
         {
             switch (type)
             {
-                case CommandType.Information:
+                case CommandType.GetInformation:
                     return "info";
-                case CommandType.Video:
+                case CommandType.ShootVideo:
                     return "video";
-                case CommandType.Foto:
+                case CommandType.ShootFoto:
                     return "foto";
                 case CommandType.Exit:
                     return "off";
@@ -27,9 +21,9 @@ namespace Vebcam
 
     enum CommandType 
     {
-        Information,
-        Video,
-        Foto,
+        GetInformation,
+        ShootVideo,
+        ShootFoto,
         Exit
     }
 }

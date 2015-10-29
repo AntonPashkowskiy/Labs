@@ -1,41 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Diagnostics;
-using System.Windows.Forms;
 using System.Threading;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using WebcamLib;
 
-namespace Vebcam
+namespace Webcam
 {
     class Program
     {
-        private static Mutex applicationMutex = null;
+        public static Mutex ApplicationMutex { get; set; }
 
-        static void Main(string[] args)
+        static void Main(string[] arguments)
         {
-            bool isMainApplication = TryTakeMutex();
-
-            if (isMainApplication)
+            if (IsMainApplication())
             {
-                Application.ApplicationExit += ApplicationExitHandler;
-                Thread.Sleep(100000);
+                var camera = new WebCamera();
+                var commandType = CommandParser.GetCommandType(arguments);
+
+                switch (commandType)
+                {
+                    case CommandType.GetInformation:
+                        var webCamerainformation = camera.GetInformation();
+                        DisplayInformation(webCamerainformation);
+                        break;
+                    case CommandType.ShootFoto:
+                        var photoShootingSetting = CommandParser.Parse(arguments);
+                        camera.ShootPhoto(photoShootingSetting);
+                        break;
+                    case CommandType.ShootVideo:
+                        var videoShootingSetting = CommandParser.Parse(arguments);
+                        camera.ShootVideo(videoShootingSetting);
+                        break;
+                    case CommandType.Exit:
+                        return;
+                }
             }
-            else if (args.Length > 0 && args[0] == CommandList.Get(CommandType.Exit))
+            else if (arguments.Length > 0 && arguments[0] == CommandList.Get(CommandType.Exit))
             {
                 KillIdenticalProcess();
             }
         }
 
-        private static bool TryTakeMutex()
+        private static bool IsMainApplication()
         {
             bool createdNew;
             string applicationGuid = Marshal.GetTypeLibGuidForAssembly(Assembly.GetExecutingAssembly()).ToString();
-            applicationMutex = new Mutex(true, applicationGuid, out createdNew);
+            ApplicationMutex = new Mutex(true, applicationGuid, out createdNew);
 
             return createdNew;
         }
@@ -43,7 +54,7 @@ namespace Vebcam
         private static void KillIdenticalProcess()
         {
             var processesList = Process.GetProcesses();
-            var identicalProcess =  processesList.FirstOrDefault(p => p.ProcessName == "Vebcam");
+            var identicalProcess =  processesList.FirstOrDefault(p => p.ProcessName == "Webcam");
 
             if (identicalProcess != null)
             {
@@ -51,12 +62,9 @@ namespace Vebcam
             }
         }
 
-        private static void ApplicationExitHandler(object sender, EventArgs e)
+        private static void DisplayInformation(WebCameraInformation information)
         {
-            using (var file = new StreamWriter(new FileStream("hello.txt", FileMode.OpenOrCreate)))
-            {
-                file.WriteLine("follow the white rabbit.");
-            }
+            
         }
     }
 }
