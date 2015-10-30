@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Diagnostics;
 using System.Threading;
 using System.Runtime.InteropServices;
@@ -15,25 +16,37 @@ namespace Webcam
         {
             if (IsMainApplication())
             {
-                var camera = new WebCamera();
-                var commandType = CommandParser.GetCommandType(arguments);
-
-                switch (commandType)
+                try
                 {
-                    case CommandType.GetInformation:
-                        var webCamerainformation = camera.GetInformation();
-                        DisplayInformation(webCamerainformation);
-                        break;
-                    case CommandType.ShootFoto:
-                        var photoShootingSetting = CommandParser.Parse(arguments);
-                        camera.ShootPhoto(photoShootingSetting);
-                        break;
-                    case CommandType.ShootVideo:
-                        var videoShootingSetting = CommandParser.Parse(arguments);
-                        camera.ShootVideo(videoShootingSetting);
-                        break;
-                    case CommandType.Exit:
-                        return;
+                    var camera = new WebCamera();
+                    var command = arguments.Length > 1 ? arguments[0] : "";
+                    var commandType = CommandList.GetCommandType(command);
+
+                    switch (commandType)
+                    {
+                        case CommandType.GetInformation:
+                            var webCamerainformation = camera.GetInformation();
+                            DisplayInformation(webCamerainformation);
+                            break;
+                        case CommandType.ShootFoto:
+                            var photoShootingSetting = CommandParser.Parse(arguments);
+                            camera.ShootPhoto(photoShootingSetting);
+                            break;
+                        case CommandType.ShootVideo:
+                            var videoShootingSetting = CommandParser.Parse(arguments);
+                            camera.ShootVideo(videoShootingSetting);
+                            break;
+                        case CommandType.Exit:
+                            return;
+                    }
+                }
+                catch (CommandParserException exception)
+                {
+                    Log(exception.Message);
+                }
+                catch (WebCameraException exception)
+                {
+                    Log(exception.Message);
                 }
             }
             else if (arguments.Length > 0 && arguments[0] == CommandList.Get(CommandType.Exit))
@@ -54,7 +67,7 @@ namespace Webcam
         private static void KillIdenticalProcess()
         {
             var processesList = Process.GetProcesses();
-            var identicalProcess =  processesList.FirstOrDefault(p => p.ProcessName == "Webcam");
+            var identicalProcess = processesList.FirstOrDefault(p => p.ProcessName == "Webcam");
 
             if (identicalProcess != null)
             {
@@ -62,9 +75,19 @@ namespace Webcam
             }
         }
 
+        private static void Log(string message)
+        {
+            var logFileStream = new FileStream("log.txt", FileMode.OpenOrCreate, FileAccess.Write);
+
+            using (var writer = new StreamWriter(logFileStream))
+            {
+                writer.WriteLine(message);
+            }
+        }
+
         private static void DisplayInformation(WebCameraInformation information)
         {
-            
+
         }
     }
 }

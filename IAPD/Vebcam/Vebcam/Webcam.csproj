@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="CommandList.cs" />
     <Compile Include="CommandParser.cs" />
+    <Compile Include="CommandParserException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

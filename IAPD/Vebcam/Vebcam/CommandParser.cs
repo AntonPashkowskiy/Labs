@@ -8,10 +8,5 @@ namespace Webcam
         {
             return new ShootingSettings();
         }
-
-        public static CommandType GetCommandType(string[] arguments)
-        {
-            
-        }
     }
 }

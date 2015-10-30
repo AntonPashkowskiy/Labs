@@ -1,6 +1,6 @@
 ﻿namespace Webcam
 {
-    class CommandList
+    static class CommandList
     {
         public static string Get(CommandType type)
         {
@@ -16,6 +16,21 @@
                     return "off";
             }
             return null;
+        }
+
+        public static CommandType GetCommandType(string command)
+        {
+            switch (command)
+            {
+                case "info":
+                    return CommandType.GetInformation;
+                case "video":
+                    return CommandType.ShootVideo;
+                case "photo":
+                    return CommandType.ShootFoto;
+                default:
+                    return CommandType.Exit;
+            }
         }
     }
 
