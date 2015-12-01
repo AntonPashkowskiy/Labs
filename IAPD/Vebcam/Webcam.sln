@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webcam", "Vebcam\Webcam.csproj", "{06E2E47B-1143-4380-8BDA-E7462EEE0240}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebcamLib", "WebcamLib\WebcamLib.csproj", "{3B1EEEF6-948B-4E76-89A8-64CC1DB2159D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebcamGUI", "WebcamGUI\WebcamGUI.csproj", "{9C2DDBA8-DF09-436A-BE56-CD53F71CC107}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebcamGUI_v2", "WebcamGUI_v2\WebcamGUI_v2.csproj", "{25701227-EB4C-46F2-934F-4547E12FBD9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{3B1EEEF6-948B-4E76-89A8-64CC1DB2159D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B1EEEF6-948B-4E76-89A8-64CC1DB2159D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B1EEEF6-948B-4E76-89A8-64CC1DB2159D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C2DDBA8-DF09-436A-BE56-CD53F71CC107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2DDBA8-DF09-436A-BE56-CD53F71CC107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2DDBA8-DF09-436A-BE56-CD53F71CC107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2DDBA8-DF09-436A-BE56-CD53F71CC107}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25701227-EB4C-46F2-934F-4547E12FBD9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25701227-EB4C-46F2-934F-4547E12FBD9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25701227-EB4C-46F2-934F-4547E12FBD9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25701227-EB4C-46F2-934F-4547E12FBD9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

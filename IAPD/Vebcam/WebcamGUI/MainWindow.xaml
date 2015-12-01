@@ -1,0 +1,18 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Name="mainWindow" x:Class="WebcamGUI.MainWindow"
+        Title="Spy" Height="597.368" Width="992.105" MinHeight="600" MinWidth="1000" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <Grid Background="#FFCDCBCB">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid Background="#FF8F8F8F">
+            <WindowsFormsHost Name="windowsFormsHost"/>
+        </Grid>
+        <Button x:Name="startStopButton" Grid.Row="1" Content="Start / Stop" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="303" Height="33" Margin="0,0,10,10" Click="OnStartStopButtonClick"/>
+        <Button x:Name="snapshootButton" Grid.Row="1" Content="Snapshoot" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="303" Height="33"  Margin="0,0,318,10" Click="OnSnapshootButtonClick"/>
+        <Label x:Name="webCameraNameLabel" Grid.Row="1" Content="" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,10"/>
+    </Grid>
+</Window>
