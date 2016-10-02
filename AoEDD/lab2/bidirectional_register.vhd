@@ -73,8 +73,8 @@ architecture Behavioral of bidirectional_register is
             J : in STD_LOGIC;
             K : in STD_LOGIC;
             CLK : in STD_LOGIC;
-            RESET : in STD_LOGIC;
-            SET : in STD_LOGIC;
+            N_RESET : in STD_LOGIC;
+            N_SET : in STD_LOGIC;
             Q : inout STD_LOGIC := '0';
             NQ : inout STD_LOGIC := '1'
         );
@@ -103,8 +103,8 @@ begin
             J => j_vector(index),
             K => k_vector(index),
             CLK => CLK,
-            RESET => not NOT_CLR,
-            SET => '0',
+            N_RESET => NOT_CLR,
+            N_SET => '1',
             Q => trigger_output(index)
         );
     end generate;

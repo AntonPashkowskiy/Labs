@@ -35,8 +35,8 @@ entity jk_trigger is
     Port ( J : in STD_LOGIC;
            K : in STD_LOGIC;
            CLK : in STD_LOGIC;
-           RESET : in STD_LOGIC;
-           SET : in STD_LOGIC;
+           N_RESET : in STD_LOGIC;
+           N_SET : in STD_LOGIC;
            Q : inout STD_LOGIC := '0';
            NQ : inout STD_LOGIC := '1');
 end jk_trigger;
@@ -48,9 +48,9 @@ begin
     process (CLK)
         variable jk: std_logic_vector(1 downto 0);
     begin    
-        if (RESET = '1') then
+        if (N_RESET = '0') then
             Q <= '0';
-        elsif (SET = '1') then
+        elsif (N_SET = '0') then
             Q <= '1';
         elsif (CLK'event and CLK = '1') then
             jk := J & K;

@@ -41,14 +41,14 @@ architecture Behavioral of jk_trigger_tb is
         Port ( J : in STD_LOGIC;
                K : in STD_LOGIC;
                CLK : in STD_LOGIC;
-               RESET : in STD_LOGIC;
-               SET : in STD_LOGIC;
+               N_RESET : in STD_LOGIC;
+               N_SET : in STD_LOGIC;
                Q : inout STD_LOGIC;
                NQ : inout STD_LOGIC);
     end component;
     
     signal jk: STD_LOGIC_VECTOR(1 downto 0);
-    signal clk, reset, set, q, nq: STD_LOGIC;
+    signal clk, n_reset, n_set, q, nq: STD_LOGIC;
     signal clock: STD_LOGIC := '0';
     constant clock_period: TIME := 2 ns;
 begin
@@ -57,8 +57,8 @@ begin
         J => jk(1),
         K => jk(0),
         CLK => clk,
-        RESET => reset,
-        SET => set,
+        N_RESET => n_reset,
+        N_SET => n_set,
         Q => q,
         NQ => nq
     ); 
@@ -82,18 +82,16 @@ begin
     
     process
     begin
-        reset <= '0';
-        set <= '0';
+        n_reset <= '1';
+        n_set <= '1';
         wait for 20ns;
         
-        reset <= '1';
-        set <= '0';
+        n_reset <= '0';
+        n_set <= '1';
         wait for 20ns;
         
-        reset <= '0';
-        set <= '1';
+        n_reset <= '1';
+        n_set <= '0';
         wait for 20ns;
     end process;
-    
-    
 end Behavioral;

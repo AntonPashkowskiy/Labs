@@ -21,6 +21,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -61,6 +62,8 @@ architecture Behavioral of biderectional_register_tb is
     
     signal inputs, outputs: STD_LOGIC_VECTOR(3 downto 0);
     signal s0, s1, sr_ser, sl_ser, clk, not_clr: STD_LOGIC;
+    signal clock: STD_LOGIC := '0';
+    constant clock_period: TIME := 2 ns;
 begin
     biderectional_register_instance: bidirectional_register port map(
         A => inputs(0),
@@ -78,5 +81,63 @@ begin
         Qc => outputs(2),
         Qd => outputs(3)
     );
-
+    
+    clock <= not clock after clock_period / 2;
+    
+    process(clock)
+    begin
+        clk <= clock;
+    end process;
+    
+    process
+    begin        
+        for test_number in 0 to 3 loop
+            case test_number is
+                when 0 =>
+                    -- parallel loading mode
+                    s0 <= '1';
+                    s1 <= '1';
+                    not_clr <= '1';
+                    sl_ser <= '0';
+                    sr_ser <= '0';
+                            
+                    for index in 0 to 15 loop
+                        inputs <= conv_std_logic_vector(index, 4);
+                        wait for 4ns;
+                    end loop;
+                    
+                when 1 =>
+                    -- right to left serial loading
+                    s0 <= '0';
+                    s1 <= '1';
+                    not_clr <= '1';
+                    
+                    sr_ser <= '0';
+                    wait for 12ns;
+                    sr_ser <= '1';
+                    wait for 12ns;
+                    
+                when 2 =>
+                    -- left to right serial loading
+                    s0 <= '1';
+                    s1 <= '0';
+                    not_clr <= '1';
+                    
+                    sl_ser <= '0';
+                    wait for 12ns;
+                    sl_ser <= '1';
+                    wait for 12ns;
+                    
+                when 3 => 
+                    -- clear output
+                    not_clr <= '0';
+                    wait for 24ns;
+                    
+                when others =>
+                    -- clear output
+                    not_clr <= '0';
+                    wait for 24ns;
+            end case;                   
+        end loop;
+    end process;
 end Behavioral;
