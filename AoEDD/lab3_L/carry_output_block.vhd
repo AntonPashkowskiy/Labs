@@ -37,6 +37,7 @@ entity carry_output_block is
         ENP: in STD_LOGIC;
         CLK: in STD_LOGIC;
         STORAGE_CELL_FEEDBACK: in STD_LOGIC_VECTOR(3 downto 0);
+        
         CCO: out STD_LOGIC;
         RCO: out STD_LOGIC
     );

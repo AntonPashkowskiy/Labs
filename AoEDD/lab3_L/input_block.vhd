@@ -65,7 +65,6 @@ architecture Behavioral of input_block is
             N_ALOAD: in STD_LOGIC;
             CLK: in STD_LOGIC;
             
-            
             OE: out STD_LOGIC;
             ACLR: out STD_LOGIC;
             ALOAD: out STD_LOGIC;
@@ -126,7 +125,7 @@ begin
             output => S_INPUTS(index + 1)
         );
     end generate; 
-        
+    
     top_signal_hub_inputs <= 
         INPUTS(0) & 
         control_bus(2) & 
@@ -156,7 +155,7 @@ begin
     signal_hub_matrix(1) <=
         INPUTS(2) &
         control_bus(2) &
-        control_bus(1) &
+        control_bus(0) &
         FEEDBACK(1) &
         FEEDBACK(0) &
         '1' &
@@ -179,9 +178,9 @@ begin
         FEEDBACK(3) &
         control_bus(1) &
         control_bus(0) &
-        FEEDBACK(2);
-        FEEDBACK(1);
-        FEEDBACK(0);
-        control_bus(1);
+        FEEDBACK(2) &
+        FEEDBACK(1) &
+        FEEDBACK(0) &
+        control_bus(1) &
         FEEDBACK(3);
 end Behavioral;

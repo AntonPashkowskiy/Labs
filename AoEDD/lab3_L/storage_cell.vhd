@@ -82,12 +82,12 @@ begin
     -- set storage cell output
     OUTPUT <= q;
     
-    process (LOCK)
+    process (LOCK, q)
     begin
         if (LOCK = '1') then
            LOCKABLE_OUTPUT <= 'Z'; 
         elsif (LOCK = '0') then
-           LOCKABLE_OUTPUT <= not nq;
+           LOCKABLE_OUTPUT <= q;
         end if;
     end process;
 end Behavioral;

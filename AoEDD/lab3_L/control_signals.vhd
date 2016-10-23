@@ -60,7 +60,7 @@ begin
     ALOAD <= not N_ALOAD;
     N_CLK <= not CLK;
     
-    CONTROL_BUS(0) <= (ENT and ENP and N_SLOAD) and not N_SCLR;
+    CONTROL_BUS(0) <= (ENT and ENP and N_SLOAD) and N_SCLR;
     CONTROL_BUS(1) <= not N_SCLR and N_SLOAD;
-    CONTROL_BUS(2) <= not N_SCLR and not N_SLOAD;
+    CONTROL_BUS(2) <= N_SCLR and not N_SLOAD;
 end Behavioral;

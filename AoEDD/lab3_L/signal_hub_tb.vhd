@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 10/16/2016 04:50:08 PM
+-- Create Date: 10/23/2016 07:39:03 AM
 -- Design Name: 
--- Module Name: top_signal_hub - Behavioral
+-- Module Name: signal_hub_tb - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -21,6 +21,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -31,19 +32,31 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity top_signal_hub is
-    Port (
-        inputs: in STD_LOGIC_VECTOR(0 to 7);
-        output: out STD_LOGIC 
-    );
-end top_signal_hub;
+entity signal_hub_tb is
+--  Port ( );
+end signal_hub_tb;
 
-architecture Behavioral of top_signal_hub is
-    signal first_and, second_and, third_and: STD_LOGIC;
-begin
-    first_and <= inputs(0) and inputs(1);
-    second_and <= inputs(2) and inputs(3) and (not inputs(4));
-    third_and <= inputs(5) and (not (inputs(6) or inputs(7)));
+architecture Behavioral of signal_hub_tb is
+    component signal_hub is
+        Port (
+            inputs: in STD_LOGIC_VECTOR(0 to 13);
+            output: out STD_LOGIC 
+        );
+    end component;
     
-    output <= first_and or second_and or third_and;
+    signal inp: STD_LOGIC_VECTOR(0 to 13);
+    signal outp: STD_LOGIC;
+begin
+    signal_hub_instance: signal_hub port map(
+        inputs => inp,
+        output => outp
+    );
+    
+    process
+    begin
+        for index in 0 to 8191 loop
+            inp <= conv_std_logic_vector(index, 14);
+            wait for 4ns;
+        end loop;
+    end process;
 end Behavioral;
