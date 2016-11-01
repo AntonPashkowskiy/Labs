@@ -1,0 +1,16 @@
+CIRCUIT NOR;
+INPUTS X1(1),X2(1),X3(1),X4(1);
+OUTPUTS Y(1);
+GATES
+A1 'NOR'(1) X1(1);
+A2 'NOR'(1) X2(1);
+A3 'NOR'(1) X3(1);
+A4 'NOR'(1) X4(1);
+B1 'NOR'(1) A2(1),X3(1);
+B2 'NOR'(1) X1(1),X4(1),A3(1),X2(1);
+B3 'NOR'(1) A1(1),X2(1),A3(1),A4(1);
+B4 'NOR'(1) A4(1),A3(1),X1(1);
+C1 'NOR'(1) B1(1),B2(1),B3(1),B4(1);
+Y 'NOR'(1) C1(1);
+ENDGATES
+END
