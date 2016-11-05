@@ -14,7 +14,7 @@ IF OBJECT_ID('dbo.Address') IS NULL
 BEGIN
     CREATE TABLE [dbo].[Address] 
     (
-        [Id] INT NOT NULL CONSTRAINT PK_Address PRIMARY KEY,
+        [Id] INT NOT NULL IDENTITY(1, 1) CONSTRAINT PK_Address PRIMARY KEY,
         [Country] NVARCHAR(50),
         [City] NVARCHAR(50),
         [Street] NVARCHAR(50)
@@ -26,7 +26,7 @@ IF OBJECT_ID('dbo.Document') IS NULL
 BEGIN
     CREATE TABLE [dbo].[Document]
     (
-        [Id] INT NOT NULL CONSTRAINT Pk_Document PRIMARY KEY,
+        [Id] INT NOT NULL IDENTITY(1, 1) CONSTRAINT Pk_Document PRIMARY KEY,
         [FileName] NVARCHAR(1000),
         [FileType] NVARCHAR(50),
         Content BINARY NULL
@@ -39,7 +39,7 @@ IF OBJECT_ID('dbo.ContactDetails') IS NULL
 BEGIN
     CREATE TABLE [dbo].[ContactDetails]
     (
-        [Id] INT NOT NULL CONSTRAINT Pk_ContactDetails PRIMARY KEY,
+        [Id] INT NOT NULL IDENTITY(1, 1) CONSTRAINT Pk_ContactDetails PRIMARY KEY,
         [FirstName] NVARCHAR(50),
         [LastName] NVARCHAR(50),
         [PhoneNumber] NVARCHAR(50),
@@ -52,7 +52,7 @@ IF OBJECT_ID('dbo.Role') IS NULL
 BEGIN
     CREATE TABLE [dbo].[Role]
     (
-        [Id] INT NOT NULL CONSTRAINT Pk_Role PRIMARY KEY,
+        [Id] INT NOT NULL IDENTITY(1, 1) CONSTRAINT Pk_Role PRIMARY KEY,
         [Description] NVARCHAR(1000),
         [Responsibility] NVARCHAR(1000),
         [Salary] MONEY NOT NULL
@@ -64,7 +64,7 @@ IF OBJECT_ID('dbo.Schedule') IS NULL
 BEGIN
     CREATE TABLE [dbo].[Schedule]
     (
-        [Id] INT NOT NULL CONSTRAINT Pk_Schedule PRIMARY KEY,
+        [Id] INT NOT NULL IDENTITY(1, 1) CONSTRAINT Pk_Schedule PRIMARY KEY,
         [WeekDays] NVARCHAR(1000),
         [Hours] NVARCHAR(1000)
     )
@@ -75,7 +75,7 @@ IF OBJECT_ID('dbo.Detail') IS NULL
 BEGIN
     CREATE TABLE [dbo].[Detail]
     (
-        [Id] INT NOT NULL CONSTRAINT Pk_Detail PRIMARY KEY,
+        [Id] INT NOT NULL IDENTITY(1, 1) CONSTRAINT Pk_Detail PRIMARY KEY,
         [Description] NVARCHAR(1000),
         [Price] MONEY NOT NULL
     )
@@ -86,7 +86,7 @@ IF OBJECT_ID('dbo.Branch') IS NULL
 BEGIN
     CREATE TABLE [dbo].[Branch]
     (
-        [Id] INT NOT NULL CONSTRAINT Pk_Branch PRIMARY KEY,
+        [Id] INT NOT NULL IDENTITY(1, 1) CONSTRAINT Pk_Branch PRIMARY KEY,
         [RegistrationNumber] INT NOT NULL,
         [AddressId] INT NOT NULL,
         [StartDate] DATE NOT NULL
@@ -108,7 +108,7 @@ IF OBJECT_ID('dbo.Employee') IS NULL
 BEGIN
     CREATE TABLE [dbo].[Employee]
     (
-        [Id] INT NOT NULL CONSTRAINT Pk_Employee PRIMARY KEY,
+        [Id] INT NOT NULL IDENTITY(1, 1) CONSTRAINT Pk_Employee PRIMARY KEY,
         [ScheduleId] INT NOT NULL,
         [RoleId] INT NOT NULL,
         [BranchId] INT NOT NULL,
@@ -143,7 +143,7 @@ IF OBJECT_ID('dbo.Client') IS NULL
 BEGIN
     CREATE TABLE [dbo].[Client]
     (
-        [Id] INT NOT NULL CONSTRAINT Pk_Client PRIMARY KEY,
+        [Id] INT NOT NULL IDENTITY(1, 1) CONSTRAINT Pk_Client PRIMARY KEY,
         [CountOfVisits] INT NOT NULL,
         [ContactDetailsId] INT NOT NULL,
     )
@@ -164,7 +164,7 @@ IF OBJECT_ID('dbo.Order') IS NULL
 BEGIN
     CREATE TABLE [dbo].[Order]
     (
-        [Id] INT NOT NULL CONSTRAINT Pk_Order PRIMARY KEY,
+        [Id] INT NOT NULL IDENTITY(1, 1) CONSTRAINT Pk_Order PRIMARY KEY,
         [ClientId] INT NOT NULL,
         [BranchId] INT NOT NULL,
         [BillingAmount] INT NOT NULL,
@@ -194,7 +194,7 @@ IF OBJECT_ID('dbo.Equipment') IS NULL
 BEGIN
     CREATE TABLE [dbo].[Equipment]
     (
-        [Id] INT NOT NULL CONSTRAINT Pk_Equipment PRIMARY KEY,
+        [Id] INT NOT NULL IDENTITY(1, 1) CONSTRAINT Pk_Equipment PRIMARY KEY,
         [OrderId] INT NOT NULL,
         [Model] NVARCHAR(500),
         [BreakingDescription] NVARCHAR(1000)
@@ -216,7 +216,7 @@ IF OBJECT_ID('dbo.DetailProducer') IS NULL
 BEGIN
     CREATE TABLE [dbo].[DetailProducer]
     (
-        [Id] INT NOT NULL CONSTRAINT Pk_DetailProducer PRIMARY KEY,
+        [Id] INT NOT NULL IDENTITY(1, 1) CONSTRAINT Pk_DetailProducer PRIMARY KEY,
         [BranchId] INT NOT NULL,
         [AddressId] INT NOT NULL,
         [ContactDetailsId] INT NOT NULL,
