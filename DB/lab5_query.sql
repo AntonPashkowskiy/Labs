@@ -1,0 +1,82 @@
+﻿USE [HRDB]
+GO
+
+-- 1
+SELECT 
+    CAST(AVG(r.SALARY_WITH_COMMISION) AS DECIMAL(18, 4)) AS AVERAGE_SALARY
+FROM
+(
+    SELECT CASE WHEN e.COMMISSION_PCT IS NULL THEN 
+                e.SALARY 
+           ELSE 
+                (e.SALARY - (e.SALARY * e.COMMISSION_PCT)) 
+           END AS SALARY_WITH_COMMISION 
+    FROM EMPLOYEES e
+) r
+
+-- 2
+SELECT 
+    d.DEPARTMENT_NAME,
+    ROUND(CAST(SUM(e.SALARY) AS INT), -3) AS SUM_SALARY 
+FROM EMPLOYEES e
+INNER JOIN DEPARTMENTS d ON d.DEPARTMENT_ID = e.DEPARTMENT_ID
+WHERE d.DEPARTMENT_NAME LIKE N'%in%'
+GROUP BY d.DEPARTMENT_NAME
+ORDER BY SUM_SALARY DESC
+
+-- 3
+SELECT
+    d.DEPARTMENT_NAME,
+    ROUND(CAST(AVG(e.SALARY) AS INT), -1) AS AVG_SALARY
+FROM EMPLOYEES e
+INNER JOIN DEPARTMENTS d ON d.DEPARTMENT_ID = e.DEPARTMENT_ID
+GROUP BY d.DEPARTMENT_NAME
+HAVING COUNT(*) >= 3
+ORDER BY AVG_SALARY
+
+
+-- 4
+SELECT
+    dep.DEPARTMENT_NAME,
+    CASE WHEN employee_statistic.EMPLOYEE_COUNT IS NULL THEN 0 ELSE employee_statistic.EMPLOYEE_COUNT END AS EMPLOYEE_COUNT,
+    CASE WHEN salary_statistic.MEDIAN_SALARY IS NULL THEN 0 ELSE salary_statistic.MEDIAN_SALARY END AS MEDIAN_SALARY
+FROM DEPARTMENTS dep
+LEFT JOIN 
+(
+    SELECT 
+        stat.DEPARTMENT_ID,
+        AVG(stat.SALARY) AS MEDIAN_SALARY
+    FROM 
+    (
+        SELECT
+            ROW_NUMBER() OVER(PARTITION BY d.DEPARTMENT_NAME ORDER BY e.SALARY) AS NUMBER,
+            e.*,
+            d.DEPARTMENT_NAME,
+            st.EMPLOYEE_COUNT
+        FROM EMPLOYEES e
+        INNER JOIN DEPARTMENTS d ON d.DEPARTMENT_ID = e.DEPARTMENT_ID
+        INNER JOIN 
+        (
+            SELECT 
+                em.DEPARTMENT_ID,
+                COUNT(em.EMPLOYEE_ID) AS EMPLOYEE_COUNT
+            FROM EMPLOYEES em    
+            GROUP BY em.DEPARTMENT_ID
+        ) st ON d.DEPARTMENT_ID = st.DEPARTMENT_ID
+    ) stat
+    -- количество работников чётное и номер принадлежит одной из половин на середине
+    WHERE (stat.EMPLOYEE_COUNT % 2 = 0 AND (stat.NUMBER = stat.EMPLOYEE_COUNT / 2 OR stat.NUMBER = (stat.EMPLOYEE_COUNT / 2) + 1)) OR
+    -- количетсво работников нечётное и номер равен номеру среднего
+          (stat.EMPLOYEE_COUNT % 2 = 1 AND (stat.NUMBER = (stat.EMPLOYEE_COUNT / 2) + 1))
+    GROUP BY stat.DEPARTMENT_ID 
+) salary_statistic ON dep.DEPARTMENT_ID = salary_statistic.DEPARTMENT_ID
+LEFT JOIN
+(
+    SELECT 
+        em.DEPARTMENT_ID,
+        COUNT(em.EMPLOYEE_ID) AS EMPLOYEE_COUNT
+    FROM EMPLOYEES em    
+    GROUP BY em.DEPARTMENT_ID
+) employee_statistic ON dep.DEPARTMENT_ID = employee_statistic.DEPARTMENT_ID
+ORDER BY employee_statistic.EMPLOYEE_COUNT DESC, dep.DEPARTMENT_NAME
+
