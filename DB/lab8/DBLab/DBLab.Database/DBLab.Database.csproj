@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>35dca591-e45a-4678-a681-0a8a4b91eebc</ProjectGuid>
+    <ProjectGuid>{35DCA591-E45A-4678-A681-0A8A4B91EEBC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DBLab.Database</RootNamespace>
@@ -30,24 +30,69 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System"/>
-    
-    <Reference Include="System.Core"/>
-    <Reference Include="System.Xml.Linq"/>
-    <Reference Include="System.Data.DataSetExtensions"/>
-    
-    
-    <Reference Include="Microsoft.CSharp"/>
-    
-    <Reference Include="System.Data"/>
-    
-    <Reference Include="System.Net.Http"/>
-    
-    <Reference Include="System.Xml"/>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Constants\FieldLengthConstants.cs" />
+    <Compile Include="Context\ComputersRepairServiceDbContext.cs" />
+    <Compile Include="Domain\Address.cs" />
+    <Compile Include="Domain\BaseEntity.cs" />
+    <Compile Include="Domain\Branch.cs" />
+    <Compile Include="Domain\Client.cs" />
+    <Compile Include="Domain\ComputerDetail.cs" />
+    <Compile Include="Domain\Configuration\AddressConfiguration.cs" />
+    <Compile Include="Domain\Configuration\BranchConfiguration.cs" />
+    <Compile Include="Domain\Configuration\ClientConfiguration.cs" />
+    <Compile Include="Domain\Configuration\ComputerDetailConfiguration.cs" />
+    <Compile Include="Domain\Configuration\ContactDetailsConfiguration.cs" />
+    <Compile Include="Domain\Configuration\DetailConfiguration.cs" />
+    <Compile Include="Domain\Configuration\DetailProducerConfiguration.cs" />
+    <Compile Include="Domain\Configuration\DetailProducerDocumentConfiguration.cs" />
+    <Compile Include="Domain\Configuration\DocumentConfiguration.cs" />
+    <Compile Include="Domain\Configuration\EmployeeConfiguration.cs" />
+    <Compile Include="Domain\Configuration\EmployeeDocumentConfiguration.cs" />
+    <Compile Include="Domain\Configuration\EquipmentConfiguration.cs" />
+    <Compile Include="Domain\Configuration\EquipmentDocumentConfiguration.cs" />
+    <Compile Include="Domain\Configuration\OrderConfiguration.cs" />
+    <Compile Include="Domain\Configuration\RoleConfiguration.cs" />
+    <Compile Include="Domain\Configuration\ScheduleConfiguration.cs" />
+    <Compile Include="Domain\ContactDetails.cs" />
+    <Compile Include="Domain\Detail.cs" />
+    <Compile Include="Domain\DetailProducer.cs" />
+    <Compile Include="Domain\DetailProducerDocument.cs" />
+    <Compile Include="Domain\Document.cs" />
+    <Compile Include="Domain\Employee.cs" />
+    <Compile Include="Domain\EmployeeDocument.cs" />
+    <Compile Include="Domain\Equipment.cs" />
+    <Compile Include="Domain\EquipmentDocument.cs" />
+    <Compile Include="Domain\Order.cs" />
+    <Compile Include="Domain\Role.cs" />
+    <Compile Include="Domain\Schedule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UnitOfWork\Interfaces\" />
+    <Folder Include="UnitOfWork\Repositories\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -57,5 +102,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
- </Project>
+</Project>

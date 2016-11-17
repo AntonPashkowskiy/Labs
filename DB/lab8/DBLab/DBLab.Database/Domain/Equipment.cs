@@ -5,7 +5,7 @@ namespace DBLab.Database.Domain
     {
         public int OrderId { get; set; }
         public string Model { get; set; }
-        public string Description { get; set; }
+        public string BreakingDescription { get; set; }
 
         public virtual Order Order { get; set; }
     }
