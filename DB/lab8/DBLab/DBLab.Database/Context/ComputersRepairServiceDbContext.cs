@@ -1,13 +1,16 @@
-﻿using System;
+﻿using DBLab.Database.Domain;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DBLab.Database.Context
 {
-    public class ComputersRepairServiceDbContext: DbContext
+    public class ComputersRepairServiceDbContext: DbContext, IBaseDbContext
     {
         #region Ctor
 
@@ -17,7 +20,12 @@ namespace DBLab.Database.Context
 
         #endregion
 
-        #region Properties
+        #region Public Methods
+
+        public new IDbSet<TEntity> Set<TEntity>() where TEntity: class
+        {
+            return base.Set<TEntity>();
+        }
 
         #endregion
 
@@ -35,7 +43,17 @@ namespace DBLab.Database.Context
 
         private void RegisterEntitiesConfiguration(DbModelBuilder modelBuilder)
         {
+            var currentAssembly = Assembly.GetExecutingAssembly();
+            var configurationTypes = currentAssembly.GetTypes()
+                .Where(t => t.BaseType != null &&
+                            t.IsGenericType &&
+                            t.BaseType.GetGenericTypeDefinition() == typeof(EntityTypeConfiguration<>));
 
+            foreach (var type in configurationTypes)
+            {
+                dynamic configurationInstance = Activator.CreateInstance(type);
+                modelBuilder.Configurations.Add(configurationInstance);
+            }
         }
 
         #endregion
