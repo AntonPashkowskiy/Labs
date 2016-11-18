@@ -1,12 +1,8 @@
-﻿using DBLab.Database.Domain;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DBLab.Database.Context
 {
@@ -45,9 +41,7 @@ namespace DBLab.Database.Context
         {
             var currentAssembly = Assembly.GetExecutingAssembly();
             var configurationTypes = currentAssembly.GetTypes()
-                .Where(t => t.BaseType != null &&
-                            t.IsGenericType &&
-                            t.BaseType.GetGenericTypeDefinition() == typeof(EntityTypeConfiguration<>));
+                .Where(t => t.IsSubclassOf(typeof(EntityTypeConfiguration<>)));
 
             foreach (var type in configurationTypes)
             {
