@@ -5,6 +5,6 @@ namespace DBLab.Database.UnitOfWork.Interfaces
     public interface IRepository<TEntity> where TEntity: class
     {
         IList<TEntity> GetAll();
-        void Create(TEntity entity);
+        TEntity Create(TEntity entity);
     }
 }

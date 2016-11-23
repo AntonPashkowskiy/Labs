@@ -9,8 +9,7 @@ namespace DBLab.Database.Domain.Configuration
         {
             ToTable("ComputerDetail");
 
-            HasKey(cd => cd.DetailProducerId);
-            HasKey(cd => cd.DetailId);
+            HasKey(cd => new { cd.DetailProducerId, cd.DetailId });
             HasRequired(cd => cd.DetailProducer).WithMany().HasForeignKey(cd => cd.DetailProducerId);
             HasRequired(cd => cd.Detail).WithMany().HasForeignKey(cd => cd.DetailId);
             Property(cd => cd.SupportedInterfaces).HasMaxLength(FieldLengthConstants.LongFieldLength);

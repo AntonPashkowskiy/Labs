@@ -9,7 +9,7 @@ namespace DBLab.Database.Domain.Configuration
             ToTable("Client");
 
             HasKey(c => c.Id);
-            HasRequired(c => c.ContactDetails).WithMany().HasForeignKey(c => c.ContactDetailId);
+            HasRequired(c => c.ContactDetails).WithMany().HasForeignKey(c => c.ContactDetailsId);
         }
     }
 }

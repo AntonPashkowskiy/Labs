@@ -8,8 +8,7 @@ namespace DBLab.Database.Domain.Configuration
         {
             ToTable("EmployeeDocument");
 
-            HasKey(ed => ed.EmployeeId);
-            HasKey(ed => ed.DocumentId);
+            HasKey(ed => new { ed.EmployeeId, ed.DocumentId });
             HasRequired(ed => ed.Employee).WithMany().HasForeignKey(ed => ed.EmployeeId);
             HasRequired(ed => ed.Document).WithMany().HasForeignKey(ed => ed.DocumentId);
         }

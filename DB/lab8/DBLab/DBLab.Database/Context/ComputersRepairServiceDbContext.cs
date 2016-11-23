@@ -12,6 +12,7 @@ namespace DBLab.Database.Context
 
         public ComputersRepairServiceDbContext(string connectionString) : base(connectionString)
         {
+            Configuration.ProxyCreationEnabled = false;
         }
 
         #endregion
@@ -41,7 +42,10 @@ namespace DBLab.Database.Context
         {
             var currentAssembly = Assembly.GetExecutingAssembly();
             var configurationTypes = currentAssembly.GetTypes()
-                .Where(t => t.IsSubclassOf(typeof(EntityTypeConfiguration<>)));
+                .Where(t => t.BaseType != null &&
+                            t.BaseType.IsGenericType &&
+                            t.BaseType.GetGenericTypeDefinition() == typeof(EntityTypeConfiguration<>))
+                .ToList();
 
             foreach (var type in configurationTypes)
             {

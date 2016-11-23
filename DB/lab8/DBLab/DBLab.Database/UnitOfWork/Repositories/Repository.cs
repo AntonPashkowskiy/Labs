@@ -18,9 +18,9 @@ namespace DBLab.Database.UnitOfWork.Repositories
 
         #endregion
 
-        public void Create(TEntity entity)
+        public TEntity Create(TEntity entity)
         {
-            _databaseContext.Set<TEntity>().Add(entity);
+            return _databaseContext.Set<TEntity>().Add(entity);
         }
 
         public IList<TEntity> GetAll()
