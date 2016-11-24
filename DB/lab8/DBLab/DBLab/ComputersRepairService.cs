@@ -1,10 +1,7 @@
 ﻿using DBLab.Database.Domain;
 using DBLab.Database.UnitOfWork.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Transactions;
 
 namespace DBLab
@@ -73,20 +70,132 @@ namespace DBLab
 
         private void Checkout()
         {
-            string currentData = string.Empty;
-            var firstBranch = _dataSource.Branches.GetAll().FirstOrDefault();
-
-            var order = new Order();
-            var client = new Client();
-            var equipment = new Equipment();
-            var contactDetails = new ContactDetails();
-
-
-
-            using (var transaction = GetTransactonScopeReadCommited())
+            try
             {
-                transaction.Complete();
+                var firstBranch = _dataSource.Branches.GetAll().FirstOrDefault();
+                var order = new Order();
+                var client = new Client();
+                var equipment = new Equipment();
+                var contactDetails = new ContactDetails();
+
+                Console.WriteLine();
+                FillContactDetailsData(contactDetails);
+                FillEquipmentData(equipment);
+                FillClientData(client);
+                FillOrderData(order);
+
+                using (var transaction = GetTransactonScopeReadCommited())
+                {
+                    var newContactDetails = _dataSource.ContactDetails.Create(contactDetails);
+                    _dataSource.Save();
+
+                    client.ContactDetailsId = newContactDetails.Id;
+                    var newClient = _dataSource.Clients.Create(client);
+                    _dataSource.Save();
+
+                    order.ClientId = newClient.Id;
+                    order.BranchId = firstBranch.Id;
+                    var newOrder = _dataSource.Orders.Create(order);
+                    _dataSource.Save();
+
+                    equipment.OrderId = newOrder.Id;
+                    var newEquipment = _dataSource.Equipments.Create(equipment);
+                    _dataSource.Save();
+
+                    transaction.Complete();
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception occured on checkout.");
+                Console.WriteLine($"{ex.Message}");
+                throw;
+            }
+        }
+
+        private void FillOrderData(Order order)
+        {
+            string currentData = string.Empty;
+            var orderDataIsInvalid = true;
+
+            do
+            {
+                Console.Write("Enter billing amont: ");
+                currentData = Console.ReadLine();
+                int billingAmount = 0;
+
+                if (int.TryParse(currentData, out billingAmount))
+                {
+                    order.BillingAmount = billingAmount;
+                    orderDataIsInvalid = false;
+                }
+                else
+                {
+                    Console.WriteLine("Billing amount must be integer number");
+                }
+
+            } while (orderDataIsInvalid);
+
+            order.ServiceStartDay = DateTime.Now;
+            order.ServiceEndDay = DateTime.Now;
+        }
+
+        private void FillClientData(Client client)
+        {
+            var clientDataIsInvalid = true;
+            string currentData = string.Empty;
+
+            do
+            {
+                Console.Write("Enter count of visits: ");
+                currentData = Console.ReadLine();
+                int countOfVisits = 0;
+
+                if (int.TryParse(currentData, out countOfVisits))
+                {
+                    client.CountOfVisits = countOfVisits;
+                    clientDataIsInvalid = false;
+                }
+                else
+                {
+                    Console.WriteLine("Count of visits must be integer number");
+                }
+
+            } while (clientDataIsInvalid);
+        }
+
+        private void FillEquipmentData(Equipment equipment)
+        {
+            string currentData = string.Empty;
+
+            Console.Write("Enter model: ");
+            currentData = Console.ReadLine();
+            equipment.Model = currentData;
+
+            Console.Write("Enter breaking description: ");
+            currentData = Console.ReadLine();
+            equipment.BreakingDescription = currentData;
+        }
+
+        private void FillContactDetailsData(ContactDetails contactDetails)
+        {
+            string currentData = string.Empty;
+
+            Console.Write("Enter first name: ");
+            currentData = Console.ReadLine();
+            contactDetails.FirstName = currentData;
+
+            Console.Write("Enter last name: ");
+            currentData = Console.ReadLine();
+            contactDetails.LastName = currentData;
+
+            Console.Write("Enter phone: ");
+            currentData = Console.ReadLine();
+            contactDetails.PhoneNumber = currentData;
+
+            Console.Write("Enter email: ");
+            currentData = Console.ReadLine();
+            contactDetails.Email = currentData;
         }
 
         private TransactionScope GetTransactonScopeReadCommited()
@@ -123,13 +232,20 @@ namespace DBLab
                         order.ServiceEndDay
                     )
                 );
-                Console.WriteLine(
-                    string.Format(
-                        "Equipment - model ({0}), breaking description ({1})",
-                        equipment.Model,
-                        equipment.BreakingDescription
-                    )
-                );
+                if (equipment != null)
+                {
+                    Console.WriteLine(
+                        string.Format(
+                            "Equipment - model ({0}), breaking description ({1})",
+                            equipment.Model,
+                            equipment.BreakingDescription
+                        )
+                    ); 
+                }
+                else
+                {
+                    Console.WriteLine("No equipment for this order. Currupted data.");
+                }
                 var clientName = string.Format("{0} {1}", contactDetails.FirstName, contactDetails.LastName);
 
                 Console.WriteLine(
