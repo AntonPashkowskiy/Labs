@@ -41,7 +41,7 @@ namespace DBLab
                 Console.Clear();
                 Console.WriteLine("Select operation:");
                 Console.WriteLine("1. Checkout");
-                Console.WriteLine("2. Print orders list.");
+                Console.WriteLine("2. Print orders statistic.");
                 Console.WriteLine("3. Exit");
                 Console.Write(": ");
                 operation = Console.ReadKey();
@@ -52,7 +52,7 @@ namespace DBLab
                 }
                 else if (operation.Key == ConsoleKey.D2)
                 {
-                    PrintOrderList();
+                    ProcessOrderStatisticPrinting();
                 }
                 else
                 {
@@ -136,8 +136,24 @@ namespace DBLab
 
             } while (orderDataIsInvalid);
 
-            order.ServiceStartDay = DateTime.Now;
-            order.ServiceEndDay = DateTime.Now;
+            orderDataIsInvalid = true;
+
+            do
+            {
+                var startDate = EnterDate("Enter start day");
+                var endDate = EnterDate("Enter end day");
+
+                if (startDate <= endDate)
+                {
+                    orderDataIsInvalid = false;
+                    order.ServiceStartDay = startDate;
+                    order.ServiceEndDay = endDate;
+                }
+                else
+                {
+                    Console.WriteLine("End date must be greater than start date.");
+                }
+            } while (orderDataIsInvalid);
         }
 
         private void FillClientData(Client client)
@@ -209,56 +225,75 @@ namespace DBLab
             );
         }
 
-        private void PrintOrderList()
+        private void ProcessOrderStatisticPrinting()
+        {
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = DateTime.Now;
+            bool datesIsInvalid = true;
+
+            Console.WriteLine();
+
+            do
+            {
+                startDate = EnterDate("Enter start day");
+                endDate = EnterDate("Enter end day");
+
+                if (startDate <= endDate)
+                {
+                    datesIsInvalid = false;
+                }
+                else
+                {
+                    Console.WriteLine("End date must be greater than start date.");
+                }
+            } while (datesIsInvalid);
+
+            PrintOrdersStatistic(startDate, endDate);
+        }
+
+        private void PrintOrdersStatistic(DateTime startDate, DateTime endDate)
         {
             var orderList = _dataSource.Orders.GetAll();
             var clientList = _dataSource.Clients.GetAll();
             var equipmentList = _dataSource.Equipments.GetAll();
             var contactDetailsList = _dataSource.ContactDetails.GetAll();
 
-            foreach (var order in orderList)
+            var ordersForPrinting = orderList.Where(o => o.ServiceStartDay.Date >= startDate && o.ServiceEndDay.Date <= endDate);
+            Console.WriteLine("Orders billing summary: {0}", ordersForPrinting.Sum(o => o.BillingAmount).ToString());
+            Console.WriteLine();
+
+            var ordersStatistic = ordersForPrinting
+                .OrderBy(o => o.ServiceStartDay)
+                .GroupBy(o => o.ServiceStartDay.Date)
+                .Select(g => new
+                {
+                    Date = g.Key,
+                    OrdersCount = g.Count()
+                });
+
+            foreach (var statisticItem in ordersStatistic)
             {
-                var client = clientList.FirstOrDefault(c => c.Id == order.ClientId);
-                var equipment = equipmentList.FirstOrDefault(e => e.OrderId == order.Id);
-                var contactDetails = contactDetailsList.FirstOrDefault(cd => cd.Id == client.ContactDetailsId);
-
-                Console.WriteLine();
-                Console.WriteLine("-----");
-                Console.WriteLine(
-                    string.Format(
-                        "Order - billing amount ({0}), service date range ({1} - {2})", 
-                        order.BillingAmount, 
-                        order.ServiceEndDay, 
-                        order.ServiceEndDay
-                    )
-                );
-                if (equipment != null)
-                {
-                    Console.WriteLine(
-                        string.Format(
-                            "Equipment - model ({0}), breaking description ({1})",
-                            equipment.Model,
-                            equipment.BreakingDescription
-                        )
-                    ); 
-                }
-                else
-                {
-                    Console.WriteLine("No equipment for this order. Currupted data.");
-                }
-                var clientName = string.Format("{0} {1}", contactDetails.FirstName, contactDetails.LastName);
-
-                Console.WriteLine(
-                    string.Format(
-                        "Client - name ({0}), phone({1}), email ({2}), count of visits ({3})", 
-                        clientName, 
-                        contactDetails.PhoneNumber, 
-                        contactDetails.Email,
-                        client.CountOfVisits
-                    )
-                );
-                Console.WriteLine();
+                Console.WriteLine("{0}| {1}", 
+                    statisticItem.Date.ToString("MM/dd/yyyy"), 
+                    string.Concat(Enumerable.Repeat("#", statisticItem.OrdersCount)));           
             }
+            Console.WriteLine();
+        }
+
+        private DateTime EnterDate(string greetingMessage)
+        {
+            string dateValueString = null;
+            bool isDateEntered = false;
+            DateTime date = DateTime.Now;
+
+            do
+            {
+                Console.Write($"{greetingMessage}: ");
+                dateValueString = Console.ReadLine();
+                isDateEntered = DateTime.TryParse(dateValueString, out date);
+            } while (!isDateEntered);
+
+            return date;
         }
 
         #endregion
