@@ -87,11 +87,17 @@ architecture Behavioral of device is
     signal first_ex2: STD_LOGIC;
     signal first_noa3: STD_LOGIC;
     signal first_nao22: STD_LOGIC;
+    signal N_X2, N_X4, n_first_noa3, N_X1: STD_LOGIC;
 begin
+    N_X2 <= not X2;
+    N_X4 <= not X4;
+    n_first_noa3 <= not first_noa3;
+    N_X1 <= not X1;
+
     first_no3a2_instance: NO3A2 port map(
         A => X3,
-        B => not X2,
-        C => not X4,
+        B => N_X2,
+        C => N_X4,
         D => X1,
         OUTPUT => first_no3a2
     );
@@ -106,22 +112,22 @@ begin
         A => first_no3a2,
         B => first_ex2,
         C => X3,
-        D => not X2,
+        D => N_X2,
         OUTPUT => first_noa3
     );
     
     second_no3a2_instance: NO3A2 port map(
-        A => not X4,
-        B => not first_noa3,
-        C => not X2,
+        A => N_X4,
+        B => n_first_noa3,
+        C => N_X2,
         D => X1,
         OUTPUT => second_no3a2
     );
     
     nao22_instance: NAO22 port map(
         A => X3,
-        B => not X2,
-        C => not X1,
+        B => N_X2,
+        C => N_X1,
         D => first_noa3,
         OUTPUT => first_nao22
     );
