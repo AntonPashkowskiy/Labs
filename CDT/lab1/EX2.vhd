@@ -41,5 +41,5 @@ end EX2;
 
 architecture Behavioral of EX2 is
 begin
-    OUTPUT <= (A and not B) or (not A and B);
+    OUTPUT <= (A and not B) or (not A and B) after 5 ns;
 end Behavioral;

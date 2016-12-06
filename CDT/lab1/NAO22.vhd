@@ -43,5 +43,5 @@ end NAO22;
 
 architecture Behavioral of NAO22 is
 begin
-    OUTPUT <= not((A or B) and (C or D));
+    OUTPUT <= not((A or B) and (C or D)) after 3 ns;
 end Behavioral;

@@ -43,5 +43,5 @@ end NO3A2;
 
 architecture Behavioral of NO3A2 is
 begin
-    OUTPUT <= not(A or B or (D and C));
+    OUTPUT <= not(A or B or (D and C)) after 5 ns;
 end Behavioral;
