@@ -17,11 +17,11 @@ architecture Behavioral of trigger_tb is
         );
     end component;
     
-    type TRIGGER_TEST is array (0 to 8) of STD_LOGIC_VECTOR(0 to 3);
+    type TRIGGER_TEST is array (natural range <>) of STD_LOGIC_VECTOR(0 to 3);
     
     signal inputs: STD_LOGIC_VECTOR(0 to 3);
     signal output: STD_LOGIC;
-    constant manual_functional_test: TRIGGER_TEST := (
+    constant manual_functional_test: TRIGGER_TEST(0 to 8) := (
         "1000",
         "0011",
         "0010",
@@ -31,6 +31,23 @@ architecture Behavioral of trigger_tb is
         "1010",
         "0001",
         "0100"
+    );
+    constant automatic_functional_test: TRIGGER_TEST(0 to 5) := (
+        "0011",
+        "0000",
+        "1110",
+        "0000",
+        "0101",
+        "0010"
+    );
+    constant automatization_functional_test: TRIGGER_TEST(0 to 6) := (
+        "0100",
+        "1010",
+        "0011",
+        "0101",
+        "0000",
+        "0110",
+        "0010"
     );
 begin
     trigger_instance: trigger port map(
@@ -43,8 +60,8 @@ begin
     
     process
     begin
-        for index in 0 to 8 loop
-            inputs <= manual_functional_test(index);
+        for index in 0 to 6 loop
+            inputs <= automatization_functional_test(index);
             wait for 100ns;
         end loop;
     end process;
