@@ -1,0 +1,12 @@
+circuit trigger;
+inputs R(1), S(1), D(1), C(1);
+outputs Q(1);
+GATES
+NC 'NOT'(1) C(1);
+NNC 'NOT'(1) NC(1);
+NS 'NOT'(1) S(1);
+NOA22_R 'NOA22'(1) NOA2_R(1),NC(1),D(1),NNC(1);
+NOA2_R 'NOA2'(1) R(1),NOA22_R(1),NS(1);
+Q 'NOT'(1) NOA22_R(1);
+ENDGATES
+END
